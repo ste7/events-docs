@@ -5,119 +5,29 @@ description: "API reference documentation for the Events API"
 
 ## Welcome
 
-Welcome to the Novacal API documentation. This REST API allows you to programmatically manage event types, events, teams, and user information. All endpoints require authentication using Bearer tokens and return responses in JSON format.
+This REST API allows you to programmatically manage and interact with your Novacal account and its related data. All endpoints require authentication using Bearer tokens and return responses in JSON format.
 
 Use this API to integrate Novacal's scheduling capabilities into your applications, automate event management, and build custom scheduling workflows.
-
-## Event Types
-
-Event types define the different kinds of meetings or events that can be scheduled.
-
-<CardGroup cols={2}>
-  <Card
-    title="Get Event Types"
-    icon="list"
-    href="/api-reference/v1/event-types/get"
-  >
-    List all event types
-  </Card>
-  <Card
-    title="Create Event Type"
-    icon="plus"
-    href="/api-reference/v1/event-types/create"
-  >
-    Create a new event type
-  </Card>
-  <Card
-    title="Get Event Type"
-    icon="search"
-    href="/api-reference/v1/event-types/find"
-  >
-    Retrieve a single event type
-  </Card>
-  <Card
-    title="Update Event Type"
-    icon="edit"
-    href="/api-reference/v1/event-types/update"
-  >
-    Update an existing event type
-  </Card>
-  <Card
-    title="Delete Event Type"
-    icon="trash"
-    href="/api-reference/v1/event-types/delete"
-  >
-    Delete an event type
-  </Card>
-</CardGroup>
-
-## Teams
-
-Teams allow multiple users to collaborate on event types and events.
-
-<CardGroup cols={2}>
-  <Card title="Get Teams" icon="list" href="/api-reference/v1/teams/get">
-    List all teams
-  </Card>
-  <Card title="Create Team" icon="plus" href="/api-reference/v1/teams/create">
-    Create a new team
-  </Card>
-  <Card title="Get Team" icon="search" href="/api-reference/v1/teams/find">
-    Retrieve a single team
-  </Card>
-  <Card title="Update Team" icon="edit" href="/api-reference/v1/teams/update">
-    Update an existing team
-  </Card>
-  <Card title="Delete Team" icon="trash" href="/api-reference/v1/teams/delete">
-    Delete a team
-  </Card>
-</CardGroup>
-
-## Users
-
-Retrieve and update information about the currently authenticated user.
-
-<CardGroup cols={2}>
-  <Card title="Get Current User" icon="user" href="/api-reference/v1/users/me">
-    Get authenticated user information
-  </Card>
-  <Card
-    title="Update Current User"
-    icon="edit"
-    href="/api-reference/v1/users/update-me"
-  >
-    Update authenticated user information
-  </Card>
-</CardGroup>
-
-## Events
-
-Events represent scheduled meetings or appointments that have been booked.
-
-<CardGroup cols={2}>
-  <Card title="Get Events" icon="list" href="/api-reference/v1/events/get">
-    List all events
-  </Card>
-  <Card title="Get Event" icon="search" href="/api-reference/v1/events/find">
-    Retrieve a single event
-  </Card>
-  <Card
-    title="Delete Event"
-    icon="trash"
-    href="/api-reference/v1/events/delete"
-  >
-    Delete an event
-  </Card>
-</CardGroup>
 
 ## Authentication
 
 All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+### Getting Your API Key
+
+To generate and manage your API keys, visit the [API Keys settings page](https://app.novacal.io/settings/api-keys) in your Novacal account. You can create new API keys or manage existing ones from this page.
+
+### Using Your API Key
+
+Include your API key in the `Authorization` header of each request using the Bearer token format:
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+Example request:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     https://api.novacal.io/v1/endpoint
 ```
