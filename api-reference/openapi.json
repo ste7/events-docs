@@ -433,15 +433,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Team deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessResponse"
-                }
-              }
-            }
+          "204": {
+            "description": "Team deleted successfully (no content)"
           },
           "400": {
             "description": "Unexpected error",
@@ -492,6 +485,218 @@
           },
           "401": {
             "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates information about the currently authenticated user",
+        "requestBody": {
+          "description": "User data to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/events": {
+      "get": {
+        "description": "Returns all events that the user has access to",
+        "responses": {
+          "200": {
+            "description": "Events response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/events/{id}": {
+      "get": {
+        "description": "Returns a single event by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a single event by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Event deleted successfully (no content)"
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -791,6 +996,60 @@
             "description": "URL to the user's avatar image",
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "UpdateUser": {
+        "required": [
+          "username",
+          "email",
+          "first_name",
+          "timezone",
+          "time_format",
+          "start_of_week"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "description": "The unique username for the user (must be unique across users and teams)",
+            "type": "string",
+            "maxLength": 255,
+            "pattern": "^[a-z0-9][a-z0-9\\-\\._]+[a-z0-9]$"
+          },
+          "email": {
+            "description": "The user's email address (must be unique)",
+            "type": "string",
+            "format": "email",
+            "maxLength": 255
+          },
+          "first_name": {
+            "description": "The user's first name",
+            "type": "string",
+            "maxLength": 255
+          },
+          "last_name": {
+            "description": "The user's last name",
+            "type": "string",
+            "maxLength": 255
+          },
+          "avatar": {
+            "description": "Avatar image file (jpeg, png, jpg, svg, max 1024 KB)",
+            "type": "string",
+            "format": "binary"
+          },
+          "timezone": {
+            "description": "The user's timezone (e.g., America/New_York)",
+            "type": "string"
+          },
+          "time_format": {
+            "description": "The user's preferred time format (12 or 24)",
+            "type": "integer",
+            "enum": [12, 24]
+          },
+          "start_of_week": {
+            "description": "The day that starts the week (0 for Sunday, 1 for Monday)",
+            "type": "integer",
+            "enum": [0, 1]
           }
         }
       },
