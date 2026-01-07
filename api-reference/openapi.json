@@ -156,7 +156,7 @@
           "required": true
         },
         "responses": {
-          "202": {
+          "200": {
             "description": "Event type updated",
             "content": {
               "application/json": {
@@ -203,18 +203,21 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Event type deleted",
+          "204": {
+            "description": "Event type deleted successfully (no content)"
+          },
+          "400": {
+            "description": "Unexpected error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SuccessResponse"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
           },
-          "400": {
-            "description": "Unexpected error",
+          "404": {
+            "description": "Event type not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -373,7 +376,7 @@
           "required": true
         },
         "responses": {
-          "202": {
+          "200": {
             "description": "Team updated",
             "content": {
               "application/json": {
