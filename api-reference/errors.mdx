@@ -1,0 +1,177 @@
+---
+title: "Errors"
+description: "API error responses and status codes"
+---
+
+The API uses standard HTTP status codes and returns error responses in a consistent JSON format.
+
+## Error Response Format
+
+All error responses follow this structure:
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "error_code",
+    "message": "Human-readable error message",
+    "details": {}
+  }
+}
+```
+</ResponseExample>
+
+The `details` field is optional and typically only included for validation errors.
+
+## Error Codes
+
+### 401 Unauthorized
+
+Returned when authentication is required but not provided or invalid.
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "unauthenticated",
+    "message": "Unauthenticated."
+  }
+}
+```
+</ResponseExample>
+
+### 403 Forbidden
+
+Returned when the authenticated user doesn't have sufficient permissions to perform the requested action.
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "access_denied",
+    "message": "Access denied."
+  }
+}
+```
+</ResponseExample>
+
+Or when the user lacks required abilities:
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "missing_ability",
+    "message": "Insufficient privileges."
+  }
+}
+```
+</ResponseExample>
+
+### 404 Not Found
+
+Returned when the requested resource doesn't exist.
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "resource_not_found",
+    "message": "Resource not found."
+  }
+}
+```
+</ResponseExample>
+
+Or:
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "not_found",
+    "message": "Not found."
+  }
+}
+```
+</ResponseExample>
+
+### 405 Method Not Allowed
+
+Returned when the HTTP method used is not allowed for the requested endpoint.
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "method_not_allowed",
+    "message": "Method not allowed."
+  }
+}
+```
+</ResponseExample>
+
+### 422 Unprocessable Content
+
+Returned when the request data fails validation.
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "validation_failed",
+    "message": "The given data was invalid.",
+    "details": {
+      "name": [
+        "The name field is required."
+      ],
+      "slug": [
+        "The slug has already been taken."
+      ]
+    }
+  }
+}
+```
+</ResponseExample>
+
+### 500 Internal Server Error
+
+Returned when an unexpected server error occurs.
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "internal_server_error",
+    "message": "Internal server error."
+  }
+}
+```
+</ResponseExample>
+
+### Other HTTP Exceptions
+
+For other HTTP exceptions, the API returns:
+
+<ResponseExample>
+```json
+{
+  "success": false,
+  "error": {
+    "code": "http_exception",
+    "message": "An error occurred."
+  }
+}
+```
+</ResponseExample>
+
+The status code will match the HTTP exception status code.
