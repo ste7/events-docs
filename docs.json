@@ -77,15 +77,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
@@ -125,9 +125,18 @@
     }
   },
   "styling": {
-    "customCss": ["/custom.css"]
+    "customCss": [
+      "/custom.css"
+    ]
   },
   "appearance": {
     "default": "dark"
-  }
+  },
+  "scripts": [
+    {
+      "src": "https://analytics.ahrefs.com/analytics.js",
+      "async": true,
+      "data-key": "nm8GuGFTT4iOwml7EPYMzQ"
+    }
+  ]
 }
