@@ -52,8 +52,10 @@
         "group": "Events",
         "pages": [
           "api-reference/v1/events/get",
+          "api-reference/v1/events/create",
           "api-reference/v1/events/find",
-          "api-reference/v1/events/delete"
+          "api-reference/v1/events/update",
+          "api-reference/v1/events/cancel"
         ]
       }
     ]

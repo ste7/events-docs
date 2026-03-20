@@ -337,6 +337,32 @@
             }
           }
         }
+      },
+      "post": {
+        "description": "Books a new event. This endpoint is public and does not require authentication.",
+        "requestBody": {
+          "description": "Event booking payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPublicEventBooking"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Event booked successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/events/{id}": {
@@ -349,8 +375,8 @@
             "description": "ID of event",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -367,23 +393,81 @@
           }
         }
       },
-      "delete": {
-        "description": "Deletes a single event by ID",
+      "put": {
+        "description": "Reschedules an existing event. This endpoint is public and does not require authentication.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of event to delete",
+            "description": "ID of event to reschedule",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
+        "requestBody": {
+          "description": "Event rescheduling payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePublicEvent"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Event deleted successfully (no content)"
+          "200": {
+            "description": "Event rescheduled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/events/{id}/cancel": {
+      "put": {
+        "description": "Cancels an existing event. This endpoint is public and does not require authentication.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event to cancel",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Event cancellation payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelPublicEvent"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Event canceled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -592,6 +676,101 @@
           }
         }
       },
+      "NewPublicEventBooking": {
+        "type": "object",
+        "required": [
+          "event_type_id",
+          "start",
+          "end",
+          "timezone",
+          "time_format"
+        ],
+        "properties": {
+          "event_type_id": {
+            "description": "The ID of the event type being booked",
+            "type": "integer"
+          },
+          "start": {
+            "description": "The requested event start date and time",
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "description": "The requested event end date and time",
+            "type": "string",
+            "format": "date-time"
+          },
+          "timezone": {
+            "description": "The booker's timezone",
+            "type": "string"
+          },
+          "time_format": {
+            "description": "The booker's preferred time format",
+            "type": "integer",
+            "enum": [12, 24]
+          },
+          "location": {
+            "description": "Optional selected location payload",
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "The selected event type location ID",
+                "type": "integer"
+              }
+            }
+          },
+          "form_field_answers": {
+            "description": "Booking answers such as name, email, and any custom fields",
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "UpdatePublicEvent": {
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "timezone",
+          "time_format"
+        ],
+        "properties": {
+          "start": {
+            "description": "The new event start date and time",
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "description": "The new event end date and time",
+            "type": "string",
+            "format": "date-time"
+          },
+          "timezone": {
+            "description": "The timezone submitted for the reschedule request",
+            "type": "string"
+          },
+          "time_format": {
+            "description": "The preferred time format submitted for the reschedule request",
+            "type": "integer",
+            "enum": [12, 24]
+          },
+          "form_field_answers": {
+            "description": "Optional updated answers for fields visible on reschedule",
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "CancelPublicEvent": {
+        "type": "object",
+        "properties": {
+          "cancellation_reason": {
+            "description": "Optional reason for canceling the event",
+            "type": ["string", "null"],
+            "maxLength": 255
+          }
+        }
+      },
       "UserResponse": {
         "type": "object",
         "required": ["success", "data"],
@@ -699,8 +878,8 @@
         "properties": {
           "id": {
             "description": "The unique identifier of the event",
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "format": "uuid"
           },
           "start": {
             "description": "The start date and time of the event",
@@ -711,6 +890,15 @@
             "description": "The end date and time of the event",
             "type": "string",
             "format": "date-time"
+          },
+          "canceled_at": {
+            "description": "The date and time when the event was canceled",
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "cancellation_reason": {
+            "description": "The reason the event was canceled, if provided",
+            "type": ["string", "null"]
           },
           "location": {
             "description": "The location of the event",
