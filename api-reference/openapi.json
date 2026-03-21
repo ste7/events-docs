@@ -759,6 +759,51 @@
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6})$"
           },
+          "redirect_enabled": {
+            "description": "Whether bookings should redirect after confirmation",
+            "type": "boolean"
+          },
+          "redirect_url": {
+            "description": "Redirect URL used when redirect is enabled",
+            "type": ["string", "null"],
+            "format": "uri"
+          },
+          "time_slot_interval": {
+            "description": "Slot interval in minutes",
+            "type": ["integer", "null"],
+            "minimum": 5,
+            "maximum": 120
+          },
+          "buffer_time_before_event": {
+            "description": "Buffer before the event in minutes",
+            "type": ["integer", "null"],
+            "minimum": 0,
+            "maximum": 120
+          },
+          "buffer_time_after_event": {
+            "description": "Buffer after the event in minutes",
+            "type": ["integer", "null"],
+            "minimum": 0,
+            "maximum": 120
+          },
+          "min_scheduling_notice": {
+            "description": "Minimum scheduling notice amount",
+            "type": ["integer", "null"],
+            "minimum": 0,
+            "maximum": 43200
+          },
+          "min_scheduling_notice_type": {
+            "description": "Unit for minimum scheduling notice",
+            "type": ["string", "null"],
+            "enum": ["minutes", "hours", "days", null]
+          },
+          "booking_frequency_limits": {
+            "description": "Optional booking limits by period",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookingFrequencyLimit"
+            }
+          },
           "form_fields": {
             "description": "Array of active form fields for this event type",
             "type": "array",
@@ -1212,9 +1257,72 @@
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6})$"
           },
+          "redirect_enabled": {
+            "description": "Whether bookings should redirect after confirmation",
+            "type": "boolean"
+          },
+          "redirect_url": {
+            "description": "Redirect URL used when redirect is enabled",
+            "type": "string",
+            "format": "uri"
+          },
+          "time_slot_interval": {
+            "description": "Slot interval in minutes",
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 120
+          },
+          "buffer_time_before_event": {
+            "description": "Buffer before the event in minutes",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 120
+          },
+          "buffer_time_after_event": {
+            "description": "Buffer after the event in minutes",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 120
+          },
+          "min_scheduling_notice": {
+            "description": "Minimum scheduling notice amount",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 43200
+          },
+          "min_scheduling_notice_type": {
+            "description": "Unit for minimum scheduling notice",
+            "type": "string",
+            "enum": ["minutes", "hours", "days"]
+          },
+          "booking_frequency_limits": {
+            "description": "Optional booking limits by period",
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "$ref": "#/components/schemas/BookingFrequencyLimit"
+            }
+          },
           "team_id": {
             "description": "Team ID (required for collective type)",
             "type": "integer"
+          }
+        }
+      },
+      "BookingFrequencyLimit": {
+        "type": "object",
+        "required": ["period", "limit"],
+        "properties": {
+          "period": {
+            "description": "Period used for the booking limit",
+            "type": "string",
+            "enum": ["day", "week", "month"]
+          },
+          "limit": {
+            "description": "Maximum number of bookings allowed in the period",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 43200
           }
         }
       },
