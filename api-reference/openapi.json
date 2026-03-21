@@ -406,64 +406,6 @@
             }
           }
         }
-      },
-      "put": {
-        "description": "Updates an existing team",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of team to update",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Team data to update",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewTeam"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Team updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TeamResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "description": "Deletes a single team by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of team to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Team deleted successfully (no content)"
-          }
-        }
       }
     },
     "/v1/users/me": {

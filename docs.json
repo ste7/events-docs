@@ -45,8 +45,6 @@
         "group": "Teams",
         "pages": [
           "api-reference/v1/teams/get",
-          "api-reference/v1/teams/delete",
-          "api-reference/v1/teams/update",
           "api-reference/v1/teams/find"
         ]
       },
