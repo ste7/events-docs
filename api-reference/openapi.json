@@ -904,6 +904,15 @@
             "description": "The location of the event",
             "type": ["string", "null"]
           },
+          "form_field_answers": {
+            "description": "Booking form answers keyed by field identifier. Each value contains only the submitted answer.",
+            "type": "object",
+            "additionalProperties": true,
+            "example": {
+              "name": "John Doe",
+              "email": "john@example.com"
+            }
+          },
           "status": {
             "description": "The status of the event",
             "type": "string"
