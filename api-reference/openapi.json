@@ -1527,6 +1527,97 @@
           "name": {
             "description": "The name of the event",
             "type": ["string", "null"]
+          },
+          "organizer": {
+            "description": "The organizer attached to the event",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EventHost"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hosts": {
+            "description": "Hosts attached to the event",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventHost"
+            }
+          },
+          "booker": {
+            "description": "The user who booked the event",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EventBooker"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "guests": {
+            "description": "Guest email addresses attached to the event",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "email"
+            }
+          }
+        }
+      },
+      "EventHost": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "name": {
+            "type": ["string", "null"]
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "username": {
+            "type": ["string", "null"]
+          },
+          "timezone": {
+            "type": ["string", "null"]
+          },
+          "time_format": {
+            "type": ["integer", "null"],
+            "enum": [12, 24, null]
+          },
+          "start_of_week": {
+            "type": ["integer", "null"],
+            "enum": [0, 1, null]
+          },
+          "avatar": {
+            "type": ["string", "null"]
+          }
+        }
+      },
+      "EventBooker": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": ["string", "null"]
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "timezone": {
+            "type": ["string", "null"]
+          },
+          "time_format": {
+            "type": ["integer", "null"],
+            "enum": [12, 24, null]
           }
         }
       },
