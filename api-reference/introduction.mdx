@@ -1,30 +1,62 @@
 ---
 title: "Introduction"
-description: "API reference documentation for the Events API"
+description: "Learn how the Novacal API works, how authentication is handled, and what to expect from requests and responses."
 ---
 
-## Welcome
+## 1. Base URL
 
-This REST API allows you to programmatically manage and interact with your Novacal account and its related data. All endpoints require authentication using Bearer tokens and return responses in JSON format.
+The Novacal API follows standard REST conventions and is available only over HTTPS
+to protect request data and credentials in transit. Plain HTTP is not
+supported.
 
-Use this API to integrate Novacal's scheduling capabilities into your applications, automate event management, and build custom scheduling workflows.
+Use the following base URL for all API requests:
 
-## Base URL
-
-All requests contain the following base URL:
-
-```
+```bash
 https://api.novacal.io
 ```
 
-## Rate Limits
+## 2. Create an API key
 
-The default maximum rate limit is 60 requests per minute per API key. After that, you'll hit the rate limit and receive a `429 Too Many Requests` response error code.
+The Novacal API uses API keys to authenticate requests. If a request is sent
+without a valid API key, the API will return an authentication error.
 
-## Authentication
+Create an API key from the [API Keys settings page](https://app.novacal.io/settings/api-keys),
+then include it as a bearer token in your request headers:
 
-To authenticate you need to add an Authorization header with the contents of the header being `Bearer YOUR_API_KEY` where `YOUR_API_KEY` is your API Key. You can generate and manage your API keys on the [API Keys settings page](https://app.novacal.io/settings/api-keys).
-
-```
+```bash
 Authorization: Bearer YOUR_API_KEY
 ```
+
+## 3. Test authentication
+
+Make a simple authenticated request to confirm your API key is working:
+
+```bash
+curl --request GET \
+  --url https://api.novacal.io/v1/users/me \
+  --header "Authorization: Bearer YOUR_API_KEY" \
+  --header "Accept: application/json"
+```
+
+If the request succeeds, your API key is valid and you are ready to continue.
+
+## Response format
+
+Successful responses use this shape:
+
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+## Rate limits
+
+The default limit is `60 requests per minute` per API key. If you exceed that, the API returns `429 Too Many Requests`.
+
+## Next steps
+
+- Explore the full [Events reference](/api-reference/v1/events/get)
+- Explore the full [Event Types reference](/api-reference/v1/event-types/get)
+- Review [Errors](/api-reference/errors)
