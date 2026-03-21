@@ -48,6 +48,12 @@
         ]
       },
       {
+        "group": "Availability",
+        "pages": [
+          "api-reference/v1/availability/get"
+        ]
+      },
+      {
         "group": "Events",
         "pages": [
           "api-reference/v1/events/get",

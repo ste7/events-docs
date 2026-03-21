@@ -322,6 +322,54 @@
         }
       }
     },
+    "/v1/availability": {
+      "get": {
+        "description": "Returns availability ranges for one of the authenticated user's event types.",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date for the requested range",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date for the requested range",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "event_type_id",
+            "in": "query",
+            "description": "Event type ID used to calculate availability",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Availability response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/events": {
       "get": {
         "description": "Returns all events that the user has access to",
@@ -673,6 +721,64 @@
             "items": {
               "$ref": "#/components/schemas/Event"
             }
+          }
+        }
+      },
+      "AvailabilityResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": {
+            "description": "Indicates whether the request was successful",
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/AvailabilityPayload"
+          }
+        }
+      },
+      "AvailabilityPayload": {
+        "type": "object",
+        "properties": {
+          "availability": {
+            "description": "Availability ranges grouped by date",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AvailabilityRange"
+              }
+            },
+            "example": {
+              "2026-03-23": [
+                {
+                  "start": "2026-03-23T09:00:00+00:00",
+                  "end": "2026-03-23T17:00:00+00:00"
+                }
+              ],
+              "2026-03-24": [
+                {
+                  "start": "2026-03-24T10:00:00+00:00",
+                  "end": "2026-03-24T15:00:00+00:00"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "AvailabilityRange": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "description": "Range start time in ISO 8601 format",
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "description": "Range end time in ISO 8601 format",
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
