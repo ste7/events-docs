@@ -149,6 +149,193 @@
         }
       }
     },
+    "/v1/event-types/{eventType}/booking-forms": {
+      "get": {
+        "description": "Returns all booking form fields for an event type",
+        "parameters": [
+          {
+            "name": "eventType",
+            "in": "path",
+            "description": "ID of event type",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking form fields response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingFormFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new booking form field for an event type",
+        "parameters": [
+          {
+            "name": "eventType",
+            "in": "path",
+            "description": "ID of event type",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Booking form field to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewBookingFormField"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Booking form field created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingFormFieldResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/event-types/{eventType}/booking-forms/{field}": {
+      "put": {
+        "description": "Updates an existing booking form field",
+        "parameters": [
+          {
+            "name": "eventType",
+            "in": "path",
+            "description": "ID of event type",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "field",
+            "in": "path",
+            "description": "ID of booking form field to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Booking form field data to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookingFormField"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Booking form field updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingFormFieldResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a booking form field",
+        "parameters": [
+          {
+            "name": "eventType",
+            "in": "path",
+            "description": "ID of event type",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "field",
+            "in": "path",
+            "description": "ID of booking form field to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Booking form field deleted successfully (no content)"
+          }
+        }
+      }
+    },
+    "/v1/event-types/{eventType}/booking-forms/update-order": {
+      "put": {
+        "description": "Updates booking form field positions for an event type",
+        "parameters": [
+          {
+            "name": "eventType",
+            "in": "path",
+            "description": "ID of event type",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Ordered booking form field positions",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookingFormFieldOrder"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Booking form field order updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingFormFieldsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/teams": {
       "get": {
         "description": "Returns all teams that the user is a member of",
@@ -613,6 +800,87 @@
           }
         }
       },
+      "BookingFormField": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier of the booking form field",
+            "type": "integer",
+            "format": "int64"
+          },
+          "identifier": {
+            "description": "Unique identifier for the form field within the event type",
+            "type": "string",
+            "maxLength": 255
+          },
+          "label": {
+            "description": "Display label for the form field",
+            "type": "string",
+            "maxLength": 255
+          },
+          "type": {
+            "description": "The type of form field",
+            "type": "string",
+            "enum": ["text", "textarea", "select", "checkbox", "radio", "phone", "email", "multiple_emails"]
+          },
+          "placeholder": {
+            "description": "Placeholder text for the form field",
+            "type": ["string", "null"],
+            "maxLength": 255
+          },
+          "is_required": {
+            "description": "Whether the form field is required",
+            "type": "boolean"
+          },
+          "is_active": {
+            "description": "Whether the form field is active",
+            "type": "boolean"
+          },
+          "position": {
+            "description": "Display order of the form field",
+            "type": "integer",
+            "minimum": 0
+          },
+          "options": {
+            "description": "Selectable options for select, checkbox, or radio fields",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BookingFormFieldResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": {
+            "description": "Indicates whether the request was successful",
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/BookingFormField"
+          }
+        }
+      },
+      "BookingFormFieldsResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": {
+            "description": "Indicates whether the request was successful",
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookingFormField"
+            }
+          }
+        }
+      },
       "SuccessResponse": {
         "type": "object",
         "required": ["success", "data"],
@@ -908,7 +1176,7 @@
             "maxLength": 55
           },
           "slug": {
-            "description": "The URL-friendly identifier (must be unique)",
+            "description": "The URL-friendly identifier for the event type",
             "type": "string",
             "maxLength": 80,
             "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
@@ -947,6 +1215,131 @@
           "team_id": {
             "description": "Team ID (required for collective type)",
             "type": "integer"
+          }
+        }
+      },
+      "NewBookingFormField": {
+        "type": "object",
+        "required": [
+          "identifier",
+          "label",
+          "type",
+          "is_required",
+          "is_active",
+          "position"
+        ],
+        "properties": {
+          "identifier": {
+            "description": "Unique identifier for the form field within the event type",
+            "type": "string",
+            "maxLength": 255
+          },
+          "label": {
+            "description": "Display label for the form field",
+            "type": "string",
+            "maxLength": 255
+          },
+          "type": {
+            "description": "The type of form field",
+            "type": "string",
+            "enum": ["text", "textarea", "select", "checkbox", "radio", "phone", "email", "multiple_emails"]
+          },
+          "placeholder": {
+            "description": "Placeholder text for the form field",
+            "type": "string",
+            "maxLength": 255
+          },
+          "is_required": {
+            "description": "Whether the form field is required",
+            "type": "boolean"
+          },
+          "is_active": {
+            "description": "Whether the form field is active",
+            "type": "boolean"
+          },
+          "position": {
+            "description": "Display order of the form field",
+            "type": "integer",
+            "minimum": 0
+          },
+          "options": {
+            "description": "Selectable options for select, checkbox, or radio fields",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UpdateBookingFormField": {
+        "type": "object",
+        "required": [
+          "label",
+          "type",
+          "is_required",
+          "is_active",
+          "position"
+        ],
+        "properties": {
+          "label": {
+            "description": "Display label for the form field",
+            "type": "string",
+            "maxLength": 255
+          },
+          "type": {
+            "description": "The type of form field",
+            "type": "string",
+            "enum": ["text", "textarea", "select", "checkbox", "radio", "phone", "email", "multiple_emails"]
+          },
+          "placeholder": {
+            "description": "Placeholder text for the form field",
+            "type": "string",
+            "maxLength": 255
+          },
+          "is_required": {
+            "description": "Whether the form field is required",
+            "type": "boolean"
+          },
+          "is_active": {
+            "description": "Whether the form field is active",
+            "type": "boolean"
+          },
+          "position": {
+            "description": "Display order of the form field",
+            "type": "integer",
+            "minimum": 0
+          },
+          "options": {
+            "description": "Selectable options for select, checkbox, or radio fields",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UpdateBookingFormFieldOrder": {
+        "type": "object",
+        "required": ["fields"],
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "position"],
+              "properties": {
+                "id": {
+                  "description": "Booking form field ID",
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "position": {
+                  "description": "New display order for the field",
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
           }
         }
       },

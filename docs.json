@@ -32,6 +32,16 @@
         ]
       },
       {
+        "group": "Booking Forms",
+        "pages": [
+          "api-reference/v1/booking-forms/get",
+          "api-reference/v1/booking-forms/create",
+          "api-reference/v1/booking-forms/update",
+          "api-reference/v1/booking-forms/delete",
+          "api-reference/v1/booking-forms/update-order"
+        ]
+      },
+      {
         "group": "Teams",
         "pages": [
           "api-reference/v1/teams/get",
