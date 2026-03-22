@@ -516,7 +516,7 @@
         }
       },
       "post": {
-        "description": "Books a new event. This endpoint is public and does not require authentication.",
+        "description": "Books a new event. This endpoint requires public API authentication. The authenticated token identifies the caller, while the booker is created from the submitted booking payload.",
         "requestBody": {
           "description": "Event booking payload",
           "content": {
@@ -571,7 +571,7 @@
         }
       },
       "put": {
-        "description": "Reschedules an existing event. This endpoint is public and does not require authentication.",
+        "description": "Reschedules an existing event. This endpoint requires public API authentication.",
         "parameters": [
           {
             "name": "id",
@@ -611,7 +611,7 @@
     },
     "/v1/events/{id}/cancel": {
       "put": {
-        "description": "Cancels an existing event. This endpoint is public and does not require authentication.",
+        "description": "Cancels an existing event. This endpoint requires public API authentication.",
         "parameters": [
           {
             "name": "id",
