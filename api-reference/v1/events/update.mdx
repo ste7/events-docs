@@ -9,3 +9,13 @@ openapi: "PUT /v1/events/{id}"
 This endpoint requires a public API bearer token.
 
 The authenticated API key identifies the caller integration. It does not replace the existing event booker.
+
+## When to use this endpoint
+
+Use this endpoint when an existing booking needs to move to a different time or timezone without creating a brand new event record.
+
+## Before you reschedule
+
+- Confirm you are targeting the correct event ID
+- Submit the updated scheduling fields you want to change
+- Keep in mind that the authenticated token identifies the integration, not the attendee

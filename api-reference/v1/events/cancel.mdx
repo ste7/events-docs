@@ -9,3 +9,13 @@ openapi: "PUT /v1/events/{id}/cancel"
 This endpoint requires a public API bearer token.
 
 The authenticated API key identifies the caller integration. It does not replace the existing event booker.
+
+## When to use this endpoint
+
+Use this endpoint to cancel a booked event from your own application or integration flow.
+
+## Cancellation notes
+
+- Pass the correct event ID for the booking you want to cancel
+- Include a cancellation reason when your workflow needs to preserve context
+- Use the response payload to confirm the event status after the request succeeds

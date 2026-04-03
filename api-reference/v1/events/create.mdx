@@ -9,3 +9,17 @@ openapi: "POST /v1/events"
 This endpoint requires a public API bearer token.
 
 The authenticated API key identifies the caller integration. The event booker is still created from the submitted booking payload, for example `form_field_answers.name` and `form_field_answers.email`.
+
+## When to use this endpoint
+
+Use this endpoint when you want to create a new booking from your own product, widget, or backend workflow.
+
+Common use cases include:
+
+- Creating a booking after a customer selects a time in your app
+- Passing attendee answers collected in a custom booking flow
+- Saving the selected timezone and meeting location in the same request
+
+## Authentication notes
+
+This route uses a public API bearer token. The token authenticates your integration, while the attendee details still come from the booking payload you submit.

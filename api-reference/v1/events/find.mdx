@@ -5,3 +5,13 @@ title: "Get Event"
 description: "Retrieve a single Novacal event by ID and inspect its booking details, timing, status, organizer, guests, and submitted form answers."
 openapi: "GET /v1/events/{id}"
 ---
+
+## What this endpoint is for
+
+Use this endpoint when you already have an event ID and need the full event payload for that specific booking.
+
+## Typical use cases
+
+- Show booking details inside an admin view
+- Inspect the current event status before allowing a change
+- Read submitted answers, attendee details, and organizer information
