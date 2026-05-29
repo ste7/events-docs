@@ -18,6 +18,7 @@
         "group": "API Reference",
         "pages": [
           "api-reference/introduction",
+          "api-reference/mcp",
           "api-reference/errors"
         ]
       },

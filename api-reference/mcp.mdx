@@ -1,0 +1,43 @@
+---
+title: "MCP"
+"og:title": "MCP - Novacal API Documentation"
+"twitter:title": "MCP - Novacal API Documentation"
+description: "Connect Novacal to MCP-compatible clients using the hosted Novacal MCP server, enabling authenticated integration between Novacal and supported AI tools through a remote MCP endpoint."
+---
+
+## Hosted endpoint
+
+Use the hosted Novacal MCP server at:
+
+```txt
+https://mcp.novacal.io/mcp
+```
+
+The server uses Streamable HTTP and is intended for MCP-compatible clients.
+
+## Authentication
+
+The MCP server uses OAuth for the MCP connection.
+
+During the first connection, you will be sent to a Novacal authorize page. On that page, enter your Novacal API key from:
+
+[https://app.novacal.io/settings/api-keys](https://app.novacal.io/settings/api-keys)
+
+The MCP server verifies the key with the Novacal API, stores it, and then uses it for future tool calls on your behalf.
+
+## Available tools
+
+The current MVP toolset includes:
+
+- `get_event_types`
+- `get_event_type`
+- `create_event_type`
+- `get_availability`
+- `get_events`
+- `create_event`
+
+## Notes
+
+- Each user should use their own Novacal API key.
+- If the saved API key is revoked or becomes invalid, reconnect and authorize again.
+- The default Novacal API limit is `60 requests per minute` per API key.
