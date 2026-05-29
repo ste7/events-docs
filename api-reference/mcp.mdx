@@ -25,6 +25,23 @@ During the first connection, you will be sent to a Novacal authorize page. On th
 
 The MCP server verifies the key with the Novacal API, stores it, and then uses it for future tool calls on your behalf.
 
+## Set up in Claude
+
+To connect Novacal in Claude:
+
+1. Open Claude and add a new custom connector.
+2. Enter the MCP server URL:
+
+```txt
+https://mcp.novacal.io/mcp
+```
+
+3. Choose `OAuth` as the authentication method.
+4. Leave `Client ID` and `Client Secret` empty.
+5. Continue the OAuth flow.
+6. When the Novacal authorize page opens, paste your Novacal API key.
+7. Finish the connection.
+
 ## Available tools
 
 The current MVP toolset includes:
@@ -35,6 +52,14 @@ The current MVP toolset includes:
 - `get_availability`
 - `get_events`
 - `create_event`
+
+## Example prompts
+
+- `Show my Novacal event types.`
+- `Show my Novacal event types and include their IDs.`
+- `Get my upcoming Novacal events.`
+- `Check my availability for event type 123 from 2026-06-01 to 2026-06-07.`
+- `Create a new one-on-one event type named Intro Call, 30 minutes long, hidden from profile, with color #2563EB.`
 
 ## Notes
 
