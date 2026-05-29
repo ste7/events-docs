@@ -460,9 +460,11 @@
             "in": "query",
             "description": "Start date for the requested range",
             "required": true,
+            "example": "2026-05-29",
             "schema": {
               "type": "string",
-              "format": "date"
+              "format": "date",
+              "example": "2026-05-29"
             }
           },
           {
@@ -470,9 +472,11 @@
             "in": "query",
             "description": "End date for the requested range",
             "required": true,
+            "example": "2026-05-30",
             "schema": {
               "type": "string",
-              "format": "date"
+              "format": "date",
+              "example": "2026-05-30"
             }
           },
           {
@@ -480,8 +484,22 @@
             "in": "query",
             "description": "Event type ID used to calculate availability",
             "required": true,
+            "example": 123,
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "example": 123
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "Optional IANA timezone used to convert returned availability ranges. Defaults to UTC.",
+            "required": false,
+            "example": "UTC",
+            "schema": {
+              "type": "string",
+              "default": "UTC",
+              "example": "Europe/Belgrade"
             }
           }
         ],
@@ -997,7 +1015,7 @@
         "type": "object",
         "properties": {
           "availability": {
-            "description": "Availability ranges grouped by date",
+            "description": "Availability ranges grouped by date in the response timezone",
             "type": "object",
             "additionalProperties": {
               "type": "array",

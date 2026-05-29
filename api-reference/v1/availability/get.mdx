@@ -5,3 +5,13 @@ title: "Get Availability"
 description: "Retrieve availability ranges for a Novacal event type across a selected date window so you can show bookable times in your app."
 openapi: "GET /v1/availability"
 ---
+
+<RequestExample>
+```bash cURL
+curl --request GET \
+  --url 'https://api.novacal.io/v1/availability?start=2026-05-29&end=2026-05-30&event_type_id=123&timezone=UTC' \
+  --header 'Authorization: Bearer <token>'
+```
+</RequestExample>
+
+Pass `timezone` as an optional IANA timezone, such as `Europe/Belgrade`, to receive availability ranges converted to that timezone. If omitted, the response uses `UTC`.
