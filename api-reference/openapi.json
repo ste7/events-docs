@@ -22,6 +22,18 @@
     "/v1/event-types": {
       "get": {
         "description": "Returns all event types that the user has access to",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "Filter event types by ownership scope. Use `personal` for event types owned by the authenticated user, or `team` for team event types.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["personal", "team"]
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Event types response",
@@ -697,6 +709,11 @@
             "description": "The type of event",
             "type": "string",
             "enum": ["one_on_one", "group", "round_robin", "collective"]
+          },
+          "scope": {
+            "description": "Whether this event type belongs to the authenticated user or a team",
+            "type": "string",
+            "enum": ["personal", "team"]
           },
           "duration": {
             "description": "Duration in minutes",

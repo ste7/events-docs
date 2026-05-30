@@ -10,6 +10,11 @@ openapi: "GET /v1/event-types"
 
 This endpoint lists the event types the authenticated user can access in Novacal.
 
+Use the optional `scope` query parameter when you only want one ownership type:
+
+- `scope=personal` returns event types owned by the authenticated user
+- `scope=team` returns team event types
+
 ## Common use cases
 
 - Populate an internal event type selector
