@@ -463,6 +463,133 @@
         }
       }
     },
+    "/v1/webhooks": {
+      "get": {
+        "description": "Returns the webhooks registered by the authenticated user.",
+        "responses": {
+          "200": {
+            "description": "Webhooks response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhooksResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Registers a webhook. Novacal sends a signed POST request to the given URL whenever one of the subscribed events happens on an event you host or organize.",
+        "requestBody": {
+          "description": "Webhook payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewWebhook"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Webhook created. The response contains the signing secret used to verify deliveries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/webhooks/{id}": {
+      "get": {
+        "description": "Returns a single webhook by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the webhook",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Webhook response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a webhook. Use this to change the target URL, change the subscribed events, or pause deliveries by setting `is_active` to `false`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the webhook to update",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Webhook fields to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWebhook"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a webhook. Novacal stops sending deliveries to it immediately.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the webhook to delete",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Webhook deleted"
+          }
+        }
+      }
+    },
     "/v1/availability": {
       "get": {
         "description": "Returns availability ranges for one of the authenticated user's event types.",
@@ -531,10 +658,75 @@
     },
     "/v1/events": {
       "get": {
-        "description": "Returns all events that the user has access to",
+        "description": "Returns a paginated list of the events the authenticated user hosts or organizes. Results can be filtered by status and by date range.",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter events by status. Use `active` for events that have not been canceled, or `canceled` for canceled events.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["active", "canceled"]
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Only return events that end on or after this date. Accepts any parsable date or date-time value, for example `2026-07-01` or `2026-07-01 09:00:00`.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2026-07-01"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "Only return events that end on or before this date. Must be after `start`. Accepts any parsable date or date-time value.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2026-07-31"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page of results to return. Defaults to `1`.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "The number of events per page, between 1 and 100. Defaults to `15`.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "example": 15
+            }
+          },
+          {
+            "name": "order_direction",
+            "in": "query",
+            "description": "Sort direction for the event start time. Defaults to `asc`.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"]
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Events response",
+            "description": "Paginated events response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1007,10 +1199,88 @@
             "example": true
           },
           "data": {
+            "$ref": "#/components/schemas/PaginatedEvents"
+          }
+        }
+      },
+      "PaginatedEvents": {
+        "description": "A page of events together with its pagination metadata",
+        "type": "object",
+        "properties": {
+          "current_page": {
+            "description": "The page number of the returned results",
+            "type": "integer",
+            "example": 1
+          },
+          "data": {
+            "description": "The events on the current page",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Event"
             }
+          },
+          "first_page_url": {
+            "description": "URL of the first page of results",
+            "type": "string"
+          },
+          "from": {
+            "description": "Index of the first result on the current page",
+            "type": ["integer", "null"],
+            "example": 1
+          },
+          "last_page": {
+            "description": "Number of the last available page",
+            "type": "integer",
+            "example": 3
+          },
+          "last_page_url": {
+            "description": "URL of the last page of results",
+            "type": "string"
+          },
+          "links": {
+            "description": "Pagination links for rendering page navigation",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": ["string", "null"]
+                },
+                "label": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "next_page_url": {
+            "description": "URL of the next page, or null on the last page",
+            "type": ["string", "null"]
+          },
+          "path": {
+            "description": "Base path of the paginated endpoint",
+            "type": "string"
+          },
+          "per_page": {
+            "description": "Number of events returned per page",
+            "type": "integer",
+            "example": 15
+          },
+          "prev_page_url": {
+            "description": "URL of the previous page, or null on the first page",
+            "type": ["string", "null"]
+          },
+          "to": {
+            "description": "Index of the last result on the current page",
+            "type": ["integer", "null"],
+            "example": 15
+          },
+          "total": {
+            "description": "Total number of events matching the request",
+            "type": "integer",
+            "example": 42
           }
         }
       },
@@ -1164,6 +1434,132 @@
             "description": "Optional reason for canceling the event",
             "type": ["string", "null"],
             "maxLength": 255
+          }
+        }
+      },
+      "Webhook": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier of the webhook",
+            "type": "integer",
+            "example": 1
+          },
+          "url": {
+            "description": "The URL Novacal sends deliveries to",
+            "type": "string",
+            "example": "https://example.com/hooks/novacal"
+          },
+          "events": {
+            "description": "The events this webhook is subscribed to",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["event.created", "event.rescheduled", "event.canceled"]
+            },
+            "example": ["event.created", "event.canceled"]
+          },
+          "secret": {
+            "description": "The signing secret used to verify deliveries. Compare it against the `X-Novacal-Signature` header.",
+            "type": "string",
+            "example": "whsec_1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p"
+          },
+          "is_active": {
+            "description": "Whether Novacal is currently sending deliveries to this webhook",
+            "type": "boolean",
+            "example": true
+          },
+          "created_at": {
+            "description": "The date and time the webhook was created",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date and time the webhook was last updated",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NewWebhook": {
+        "type": "object",
+        "required": ["url", "events"],
+        "properties": {
+          "url": {
+            "description": "The HTTPS URL that Novacal sends deliveries to",
+            "type": "string",
+            "example": "https://example.com/hooks/novacal"
+          },
+          "events": {
+            "description": "The events to subscribe to. At least one is required.",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": ["event.created", "event.rescheduled", "event.canceled"]
+            },
+            "example": ["event.created", "event.canceled"]
+          },
+          "is_active": {
+            "description": "Whether the webhook starts active. Defaults to `true`.",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "UpdateWebhook": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "description": "A new target URL for deliveries",
+            "type": "string",
+            "example": "https://example.com/hooks/novacal-v2"
+          },
+          "events": {
+            "description": "Replaces the subscribed events",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": ["event.created", "event.rescheduled", "event.canceled"]
+            },
+            "example": ["event.rescheduled"]
+          },
+          "is_active": {
+            "description": "Set to `false` to pause deliveries without deleting the webhook",
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "WebhookResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": {
+            "description": "Indicates whether the request was successful",
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Webhook"
+          }
+        }
+      },
+      "WebhooksResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": {
+            "description": "Indicates whether the request was successful",
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Webhook"
+            }
           }
         }
       },
@@ -1465,6 +1861,11 @@
             "type": "string",
             "format": "uuid"
           },
+          "event_type_id": {
+            "description": "The identifier of the event type this event was booked from",
+            "type": ["integer", "null"],
+            "example": 42
+          },
           "start": {
             "description": "The start date and time of the event",
             "type": "string",
@@ -1541,6 +1942,16 @@
               "type": "string",
               "format": "email"
             }
+          },
+          "created_at": {
+            "description": "The date and time the event was created",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date and time the event was last updated",
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

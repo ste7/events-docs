@@ -8,10 +8,34 @@ openapi: "GET /v1/events"
 
 ## What this endpoint returns
 
-This endpoint returns the events visible to the authenticated user. Use it to review scheduled meetings, sync event data into your own system, or build internal dashboards.
+This endpoint returns the events the authenticated user hosts or organizes. Use it to review scheduled meetings, sync event data into your own system, or build internal dashboards.
+
+Results are always paginated. The `data` object holds the events for the current page in `data.data`, alongside pagination metadata such as `current_page`, `last_page`, `per_page`, and `total`.
+
+## Filtering and pagination
+
+| Parameter | Description |
+| --- | --- |
+| `status` | `active` returns events that have not been canceled, `canceled` returns canceled events |
+| `start` | Only return events ending on or after this date, for example `2026-07-01` |
+| `end` | Only return events ending on or before this date. Must be after `start` |
+| `page` | The page of results to return. Defaults to `1` |
+| `per_page` | Events per page, between 1 and 100. Defaults to `15` |
+| `order_direction` | Sort direction for the event start time, `asc` or `desc`. Defaults to `asc` |
+
+```bash
+curl --request GET \
+  --url "https://api.novacal.io/v1/events?status=active&start=2026-07-01&end=2026-07-31&per_page=50" \
+  --header "Authorization: Bearer YOUR_API_KEY" \
+  --header "Accept: application/json"
+```
+
+Paginate by requesting the next page until `next_page_url` is `null`.
 
 ## Common use cases
 
 - Load a list of upcoming or past events
 - Sync Novacal bookings into a CRM or reporting workflow
+- Pull only the bookings for a given month with `start` and `end`
+- Reconcile cancellations by requesting `status=canceled`
 - Review attendee, host, and event status data before follow-up actions

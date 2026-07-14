@@ -71,6 +71,16 @@
           "api-reference/v1/events/update",
           "api-reference/v1/events/cancel"
         ]
+      },
+      {
+        "group": "Webhooks",
+        "pages": [
+          "api-reference/v1/webhooks/get",
+          "api-reference/v1/webhooks/create",
+          "api-reference/v1/webhooks/find",
+          "api-reference/v1/webhooks/update",
+          "api-reference/v1/webhooks/delete"
+        ]
       }
     ]
   },

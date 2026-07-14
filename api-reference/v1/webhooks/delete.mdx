@@ -1,0 +1,20 @@
+---
+title: "Delete Webhook"
+"og:title": "Delete Webhook - Novacal API Documentation"
+"twitter:title": "Delete Webhook - Novacal API Documentation"
+description: "Delete a Novacal webhook to permanently stop event deliveries to its endpoint."
+openapi: "DELETE /v1/webhooks/{id}"
+---
+
+## What this endpoint is for
+
+Permanently remove a webhook. Novacal stops sending deliveries to it immediately.
+
+## Before you delete
+
+- Deleting a webhook discards its signing secret. Registering the same URL again issues a new secret.
+- To stop deliveries temporarily, set `is_active` to `false` with the [Update Webhook](/api-reference/v1/webhooks/update) endpoint instead.
+
+## Access
+
+You can only delete webhooks registered on your own account. Deleting another account's webhook returns `403 access_denied`.

@@ -19,3 +19,7 @@ Use this endpoint to cancel a booked event from your own application or integrat
 - Pass the correct event ID for the booking you want to cancel
 - Include a cancellation reason when your workflow needs to preserve context
 - Use the response payload to confirm the event status after the request succeeds
+
+## Access
+
+The authenticated user must be the organizer or a host of the event. Canceling an event you do not host returns `403 access_denied`.

@@ -1,0 +1,27 @@
+---
+title: "Update Webhook"
+"og:title": "Update Webhook - Novacal API Documentation"
+"twitter:title": "Update Webhook - Novacal API Documentation"
+description: "Update a Novacal webhook to change its target URL, adjust which events it subscribes to, or pause deliveries without deleting it."
+openapi: "PUT /v1/webhooks/{id}"
+---
+
+## What this endpoint is for
+
+Change an existing webhook without re-registering it. Send only the fields you want to change.
+
+## What you can change
+
+- `url` — move deliveries to a different endpoint
+- `events` — replace the list of subscribed events
+- `is_active` — set to `false` to pause deliveries, and back to `true` to resume
+
+The signing secret does not change when you update a webhook, so your receiving endpoint keeps working.
+
+## Pausing instead of deleting
+
+Set `is_active` to `false` while you deploy or debug your receiver. Novacal stops sending deliveries but keeps the webhook and its secret intact.
+
+## Access
+
+You can only update webhooks registered on your own account. Updating another account's webhook returns `403 access_denied`.

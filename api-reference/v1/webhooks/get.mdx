@@ -1,0 +1,17 @@
+---
+title: "Get Webhooks"
+"og:title": "Get Webhooks - Novacal API Documentation"
+"twitter:title": "Get Webhooks - Novacal API Documentation"
+description: "List the webhooks registered on your Novacal account, including their target URL, subscribed events, signing secret, and active status."
+openapi: "GET /v1/webhooks"
+---
+
+## What this endpoint returns
+
+This endpoint returns every webhook you have registered, newest first. Each entry includes its target URL, the events it is subscribed to, its signing secret, and whether it is currently active.
+
+## Common use cases
+
+- Audit which endpoints are receiving Novacal deliveries
+- Retrieve a signing secret you need to verify incoming requests
+- Confirm which webhooks are paused before debugging a missing delivery

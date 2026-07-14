@@ -1,0 +1,21 @@
+---
+title: "Get Webhook"
+"og:title": "Get Webhook - Novacal API Documentation"
+"twitter:title": "Get Webhook - Novacal API Documentation"
+description: "Retrieve a single Novacal webhook by ID to inspect its target URL, subscribed events, signing secret, and active status."
+openapi: "GET /v1/webhooks/{id}"
+---
+
+## What this endpoint is for
+
+Use this endpoint when you already have a webhook ID and need its full record, including the signing secret used to verify deliveries.
+
+## Typical use cases
+
+- Look up a signing secret when configuring your receiving endpoint
+- Check which events a webhook is subscribed to
+- Confirm whether a webhook is active before investigating missing deliveries
+
+## Access
+
+You can only retrieve webhooks registered on your own account. Requesting another account's webhook returns `403 access_denied`.
