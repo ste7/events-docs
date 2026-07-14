@@ -1,0 +1,25 @@
+---
+title: "Get Contacts"
+"og:title": "Get Contacts - Novacal API Documentation"
+"twitter:title": "Get Contacts - Novacal API Documentation"
+description: "List the contacts on your Novacal account, with search by name or email and pagination metadata."
+openapi: "GET /v1/contacts"
+---
+
+## What this endpoint returns
+
+This endpoint returns your contacts. Results are always paginated: the contacts for the current page live in `data.data`, alongside `current_page`, `per_page`, and `total`.
+
+## Filtering and pagination
+
+| Parameter | Description |
+| --- | --- |
+| `query` | Return only contacts whose name or email contains this string |
+| `page` | The page of results to return. Defaults to `1` |
+| `per_page` | Contacts per page, between 1 and 100. Defaults to `15` |
+
+## Common use cases
+
+- Sync your Novacal contacts into a CRM
+- Look up a contact by email before creating a booking
+- Build an internal address book from your bookers

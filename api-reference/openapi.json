@@ -463,6 +463,170 @@
         }
       }
     },
+    "/v1/contacts": {
+      "get": {
+        "description": "Returns a paginated list of the authenticated user's contacts. Supports searching by name or email.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Filter contacts whose name or email contains this string.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page of results to return. Defaults to `1`.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "The number of contacts per page, between 1 and 100. Defaults to `15`.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "example": 15
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated contacts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a contact for the authenticated user.",
+        "requestBody": {
+          "description": "Contact payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewContact"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Contact created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/contacts/{id}": {
+      "get": {
+        "description": "Returns a single contact by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the contact",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a contact. Send only the fields you want to change.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the contact to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Contact fields to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateContact"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Contact updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a contact.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the contact to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Contact deleted"
+          }
+        }
+      }
+    },
     "/v1/webhooks": {
       "get": {
         "description": "Returns the webhooks registered by the authenticated user.",
@@ -1462,7 +1626,7 @@
           "secret": {
             "description": "The signing secret used to verify deliveries. Compare it against the `X-Novacal-Signature` header.",
             "type": "string",
-            "example": "whsec_1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p"
+            "example": "novacal_wh_YOUR_SIGNING_SECRET"
           },
           "is_active": {
             "description": "Whether Novacal is currently sending deliveries to this webhook",
@@ -1543,6 +1707,133 @@
           },
           "data": {
             "$ref": "#/components/schemas/Webhook"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier of the contact",
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "description": "The contact's name",
+            "type": ["string", "null"],
+            "example": "Ada Lovelace"
+          },
+          "email": {
+            "description": "The contact's email address",
+            "type": "string",
+            "format": "email",
+            "example": "ada@example.com"
+          },
+          "timezone": {
+            "description": "The contact's timezone",
+            "type": ["string", "null"],
+            "example": "Europe/London"
+          },
+          "created_at": {
+            "description": "The date and time the contact was created",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date and time the contact was last updated",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NewContact": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "name": {
+            "description": "The contact's name",
+            "type": "string",
+            "example": "Ada Lovelace"
+          },
+          "email": {
+            "description": "The contact's email address",
+            "type": "string",
+            "format": "email",
+            "example": "ada@example.com"
+          },
+          "timezone": {
+            "description": "The contact's timezone",
+            "type": "string",
+            "example": "Europe/London"
+          }
+        }
+      },
+      "UpdateContact": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "A new name for the contact",
+            "type": "string",
+            "example": "Ada L."
+          },
+          "email": {
+            "description": "A new email address for the contact",
+            "type": "string",
+            "format": "email",
+            "example": "ada.new@example.com"
+          },
+          "timezone": {
+            "description": "A new timezone for the contact",
+            "type": "string",
+            "example": "America/New_York"
+          }
+        }
+      },
+      "ContactResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": {
+            "description": "Indicates whether the request was successful",
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Contact"
+          }
+        }
+      },
+      "ContactsResponse": {
+        "type": "object",
+        "required": ["success", "data"],
+        "properties": {
+          "success": {
+            "description": "Indicates whether the request was successful",
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "current_page": {
+                "type": "integer",
+                "example": 1
+              },
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              },
+              "per_page": {
+                "type": "integer",
+                "example": 15
+              },
+              "total": {
+                "type": "integer",
+                "example": 42
+              }
+            }
           }
         }
       },

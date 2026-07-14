@@ -1,0 +1,15 @@
+---
+title: "Update Contact"
+"og:title": "Update Contact - Novacal API Documentation"
+"twitter:title": "Update Contact - Novacal API Documentation"
+description: "Update a Novacal contact's name, email, or timezone."
+openapi: "PUT /v1/contacts/{id}"
+---
+
+## What this endpoint is for
+
+Change a contact's details. Send only the fields you want to change.
+
+## Access
+
+You can only update your own contacts. Updating another account's contact returns `403 access_denied`.

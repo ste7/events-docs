@@ -1,0 +1,15 @@
+---
+title: "Get Contact"
+"og:title": "Get Contact - Novacal API Documentation"
+"twitter:title": "Get Contact - Novacal API Documentation"
+description: "Retrieve a single Novacal contact by ID."
+openapi: "GET /v1/contacts/{id}"
+---
+
+## What this endpoint is for
+
+Fetch a single contact when you already have its ID.
+
+## Access
+
+You can only retrieve your own contacts. Requesting another account's contact returns `403 access_denied`.

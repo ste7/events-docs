@@ -1,0 +1,15 @@
+---
+title: "Delete Contact"
+"og:title": "Delete Contact - Novacal API Documentation"
+"twitter:title": "Delete Contact - Novacal API Documentation"
+description: "Delete a contact from your Novacal account."
+openapi: "DELETE /v1/contacts/{id}"
+---
+
+## What this endpoint is for
+
+Permanently remove a contact from your account. This does not delete any events the person booked.
+
+## Access
+
+You can only delete your own contacts. Deleting another account's contact returns `403 access_denied`.

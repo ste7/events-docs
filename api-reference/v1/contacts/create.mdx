@@ -1,0 +1,16 @@
+---
+title: "Create Contact"
+"og:title": "Create Contact - Novacal API Documentation"
+"twitter:title": "Create Contact - Novacal API Documentation"
+description: "Add a contact to your Novacal account with a name, email, and timezone."
+openapi: "POST /v1/contacts"
+---
+
+## What this endpoint is for
+
+Add someone to your contacts manually, rather than waiting for them to book. Only `email` is required.
+
+## Notes
+
+- If you already have a contact with the same email, its name and timezone are updated instead of creating a duplicate.
+- The contact is attached to your account. It does not affect other users or teams.

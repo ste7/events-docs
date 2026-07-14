@@ -81,6 +81,16 @@
           "api-reference/v1/webhooks/update",
           "api-reference/v1/webhooks/delete"
         ]
+      },
+      {
+        "group": "Contacts",
+        "pages": [
+          "api-reference/v1/contacts/get",
+          "api-reference/v1/contacts/create",
+          "api-reference/v1/contacts/find",
+          "api-reference/v1/contacts/update",
+          "api-reference/v1/contacts/delete"
+        ]
       }
     ]
   },
