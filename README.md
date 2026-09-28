@@ -18,12 +18,12 @@ This repository holds no product code and has no build step. Every page is an MD
 
 ## Who this is for
 
-| You are | Start here |
-| --- | --- |
-| Integrating against the Novacal API | [docs.novacal.io](https://docs.novacal.io) — this repo is just the raw source |
-| Documenting a new or changed endpoint | [Adding an endpoint page](#adding-an-endpoint-page) |
-| Fixing prose on an existing page | [Editing a page](#editing-a-page) |
-| Changing structure, theme, or SEO | [docs.json](docs.json) — see [Configuration](#configuration) |
+| You are                               | Start here                                                                    |
+| ------------------------------------- | ----------------------------------------------------------------------------- |
+| Integrating against the Novacal API   | [docs.novacal.io](https://docs.novacal.io) — this repo is just the raw source |
+| Documenting a new or changed endpoint | [Adding an endpoint page](#adding-an-endpoint-page)                           |
+| Fixing prose on an existing page      | [Editing a page](#editing-a-page)                                             |
+| Changing structure, theme, or SEO     | [docs.json](docs.json) — see [Configuration](#configuration)                  |
 
 ---
 
@@ -51,14 +51,14 @@ mint rename old new    # rename a page and rewrite every link to it
 
 This is the part that makes this repo different from a normal docs site. The request/response tables, parameter lists, and "Try it" panels are **not written by hand** — they are generated from [api-reference/openapi.json](api-reference/openapi.json).
 
-| | |
-| --- | --- |
-| Spec version | OpenAPI **3.1.0** |
-| API title | Events API `1.0.0` |
-| Server | `https://api.novacal.io` |
-| Auth | `bearerAuth` — HTTP bearer, applied globally |
-| Paths | 16 |
-| Operations | 31 |
+|              |                                              |
+| ------------ | -------------------------------------------- |
+| Spec version | OpenAPI **3.1.0**                            |
+| API title    | Events API `1.0.0`                           |
+| Server       | `https://api.novacal.io`                     |
+| Auth         | `bearerAuth` — HTTP bearer, applied globally |
+| Paths        | 16                                           |
+| Operations   | 31                                           |
 
 An endpoint page binds itself to one operation with the `openapi` frontmatter key. From `api-reference/v1/events/create.mdx`:
 
@@ -90,18 +90,18 @@ So each page is two halves: the generated reference, and the hand-written MDX bo
 
 Navigation is nine groups, all under `api-reference/`:
 
-| Group | Pages | Covers |
-| --- | --- | --- |
-| API Reference | 3 | Introduction, MCP, Errors |
-| Event Types | 5 | get, create, update, delete, find |
-| Booking Forms | 5 | get, create, update, delete, update-order |
-| Events | 5 | get, create, find, update, cancel |
-| Webhooks | 5 | get, create, find, update, delete |
-| Contacts | 5 | get, create, find, update, delete |
-| Teams | 2 | get, find |
-| Users | 2 | me, update-me |
-| Availability | 1 | get |
-| **Total** | **33** | |
+| Group         | Pages  | Covers                                    |
+| ------------- | ------ | ----------------------------------------- |
+| API Reference | 3      | Introduction, MCP, Errors                 |
+| Event Types   | 5      | get, create, update, delete, find         |
+| Booking Forms | 5      | get, create, update, delete, update-order |
+| Events        | 5      | get, create, find, update, cancel         |
+| Webhooks      | 5      | get, create, find, update, delete         |
+| Contacts      | 5      | get, create, find, update, delete         |
+| Teams         | 2      | get, find                                 |
+| Users         | 2      | me, update-me                             |
+| Availability  | 1      | get                                       |
+| **Total**     | **33** |                                           |
 
 The repo holds 49 `.mdx` files, so 16 are not published. See [Known cleanup](#known-cleanup).
 
@@ -159,15 +159,15 @@ The body convention on endpoint pages is consistent and worth keeping: a one-lin
 
 Everything site-wide lives in [docs.json](docs.json).
 
-| Key | What it controls |
-| --- | --- |
-| `navigation.groups` | Sidebar structure. A page not listed here is not published. |
-| `colors` | Brand green — `#16A34A` primary, `#07C983` light, `#15803D` dark. |
-| `appearance` | `default: "dark"`. No `strict` flag, so readers can toggle to light. |
+| Key                  | What it controls                                                                        |
+| -------------------- | --------------------------------------------------------------------------------------- |
+| `navigation.groups`  | Sidebar structure. A page not listed here is not published.                             |
+| `colors`             | Brand green — `#16A34A` primary, `#07C983` light, `#15803D` dark.                       |
+| `appearance`         | `default: "dark"`. No `strict` flag, so readers can toggle to light.                    |
 | `contextual.options` | The per-page AI actions: copy, view, ChatGPT, Claude, Perplexity, MCP, Cursor, VS Code. |
-| `seo.metatags` | Site-wide Open Graph, Twitter Card, and robots tags. Page frontmatter overrides these. |
-| `scripts` | Loads [ahrefs-analytics.js](ahrefs-analytics.js). |
-| `navbar` | The Support mail link and the Dashboard button. |
+| `seo.metatags`       | Site-wide Open Graph, Twitter Card, and robots tags. Page frontmatter overrides these.  |
+| `scripts`            | Loads [ahrefs-analytics.js](ahrefs-analytics.js).                                       |
+| `navbar`             | The Support mail link and the Dashboard button.                                         |
 
 ---
 
@@ -197,7 +197,7 @@ Sixteen `.mdx` files are not in the navigation. Most are deliberate, but four ar
 
 - **`api-reference/v1/events/delete.mdx` is stale.** It declares `openapi: "DELETE /v1/events/{id}"`, and that operation does not exist in the spec — cancelling is `PUT /v1/events/{id}/cancel`. Publishing this page as-is would render prose with no reference block.
 - **`api-reference/v1/teams/delete.mdx` and `teams/update.mdx` have no `openapi` key**, and the spec has no matching operations. They are drafts for endpoints the API does not expose yet.
-- **`api-reference/v1/teams/create.mdx` is publishable.** It declares `POST /v1/teams`, which *is* in the spec. Adding one line to `docs.json` would ship it.
+- **`api-reference/v1/teams/create.mdx` is publishable.** It declares `POST /v1/teams`, which _is_ in the spec. Adding one line to `docs.json` would ship it.
 - **`ai-tools/` (3 pages)** — Claude Code, Cursor, and Windsurf guides, written but never linked into the nav.
 - **`essentials/` (6 pages) and `snippets/`** are unmodified Mintlify starter-kit content, useful only as syntax reference.
 - **`index.mdx` and `development.mdx`** are not in any nav group. `index.mdx` still serves as the landing page at `/`.
@@ -210,7 +210,7 @@ Sixteen `.mdx` files are not in the navigation. Most are deliberate, but four ar
 
 Written and maintained by **Stefan Babic** ([@ste7](https://github.com/ste7)) — 51 commits since January 2026.
 
-Questions about the product go to [support@novacal.io](mailto:support@novacal.io). Product updates are posted on [LinkedIn](https://linkedin.com/company/novacal-io) and [X](https://x.com/novacalio).
+Questions about the product go to [support@novacal.io](mailto:support@novacal.io). Product updates are posted on [LinkedIn](https://linkedin.com/company/novacal-io).
 
 ---
 
