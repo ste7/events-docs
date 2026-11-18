@@ -1,0 +1,19 @@
+---
+title: "Duplicate Event Type"
+"og:title": "Duplicate Event Type - Novacal API Documentation"
+"twitter:title": "Duplicate Event Type - Novacal API Documentation"
+description: "Make a copy of a Novacal event type with its settings, hosts, booking form fields, locations and notifications."
+openapi: "POST /v1/event-types/{id}/duplicate"
+---
+
+## What the copy gets
+
+The copy gets the same settings, hosts, booking form fields, locations and notifications as the original.
+
+The name ends with `(Copy)` and the slug ends with `-copy`. If a copy already exists, the next copy gets a number, for example `(Copy 2)` and `-copy-2`.
+
+## Limits
+
+- You can only duplicate event types on your own account. Another account's event type returns `403 access_denied`.
+
+A successful duplicate returns `201` with the new event type.

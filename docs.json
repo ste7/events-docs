@@ -29,7 +29,8 @@
           "api-reference/v1/event-types/create",
           "api-reference/v1/event-types/delete",
           "api-reference/v1/event-types/update",
-          "api-reference/v1/event-types/find"
+          "api-reference/v1/event-types/find",
+          "api-reference/v1/event-types/duplicate"
         ]
       },
       {
@@ -70,7 +71,8 @@
           "api-reference/v1/availabilities/create",
           "api-reference/v1/availabilities/find",
           "api-reference/v1/availabilities/update",
-          "api-reference/v1/availabilities/delete"
+          "api-reference/v1/availabilities/delete",
+          "api-reference/v1/availabilities/duplicate"
         ]
       },
       {

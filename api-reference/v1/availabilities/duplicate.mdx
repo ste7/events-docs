@@ -1,0 +1,20 @@
+---
+title: "Duplicate Availability"
+"og:title": "Duplicate Availability - Novacal API Documentation"
+"twitter:title": "Duplicate Availability - Novacal API Documentation"
+description: "Make a copy of a Novacal availability schedule with a new name, the same timezone and the same hours."
+openapi: "POST /v1/availabilities/{id}/duplicate"
+---
+
+## What the copy gets
+
+The copy gets the same timezone and hours as the original. You give the copy a new `name`.
+
+The copy is never the default schedule. Your default schedule does not change.
+
+## Limits
+
+- `name` is required. A request without it returns `422`.
+- You can only duplicate schedules on your own account. Another account's schedule returns `403 access_denied`.
+
+A successful duplicate returns `201` with the new schedule.

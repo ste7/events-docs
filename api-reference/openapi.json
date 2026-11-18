@@ -161,6 +161,35 @@
         }
       }
     },
+    "/v1/event-types/{id}/duplicate": {
+      "post": {
+        "description": "Makes a copy of an event type. The copy gets the same settings, hosts, booking form fields, locations and notifications. Its name ends with \"(Copy)\" and its slug ends with \"-copy\".",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event type to duplicate",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Event type duplicated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/event-types/{eventType}/booking-forms": {
       "get": {
         "description": "Returns all booking form fields for an event type",
@@ -1211,6 +1240,53 @@
         "responses": {
           "204": {
             "description": "Availability deleted successfully (no content)"
+          }
+        }
+      }
+    },
+    "/v1/availabilities/{id}/duplicate": {
+      "post": {
+        "description": "Makes a copy of an availability schedule with a new name. The copy gets the same timezone and hours. The copy is never the default schedule.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the availability schedule to duplicate",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Name of the new schedule",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "Name of the new schedule"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Availability duplicated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityResponse"
+                }
+              }
+            }
           }
         }
       }
