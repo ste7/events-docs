@@ -2323,6 +2323,10 @@
             "description": "Whether the event type is hidden from profile",
             "type": "boolean"
           },
+          "is_active": {
+            "description": "Whether the event type is on. When it is off, its booking page is offline and nobody can book it.",
+            "type": "boolean"
+          },
           "color": {
             "description": "Color code in hex format (e.g., #FF5733)",
             "type": "string",

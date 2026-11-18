@@ -17,6 +17,12 @@ Use this endpoint to update an existing event type without recreating it from sc
 - Change configuration tied to the booking experience
 - Point the event type at a different availability schedule
 
+## Turning an event type on or off
+
+Send `is_active: false` to turn an event type off. Its booking page goes offline and nobody can book it. Send `is_active: true` to turn it on again.
+
+This is not the same as `hidden_from_profile`. A hidden event type does not show on your profile, but people can still book it with its direct link.
+
 ## Changing the schedule
 
 Send `availability_id` to move the event type onto another schedule. Use [Get Availabilities](/api-reference/v1/availabilities/get) to find the ID. The schedule must belong to your own account, otherwise the request returns `422`.
