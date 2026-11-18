@@ -1,0 +1,36 @@
+---
+title: "Test Webhook"
+"og:title": "Test Webhook - Novacal API Documentation"
+"twitter:title": "Test Webhook - Novacal API Documentation"
+description: "Send a signed sample payload to a Novacal webhook URL and see at once if your endpoint received it."
+openapi: "POST /v1/webhooks/{id}/test"
+---
+
+## What this endpoint is for
+
+Use this endpoint to check your webhook URL without a real booking. Novacal sends a sample payload to your URL at once and tells you the result.
+
+## The sample payload
+
+The payload has the same shape and the same headers as a real delivery. It is signed with your webhook `secret`, so you can also test your signature check.
+
+The payload has `"test": true` and uses sample data, for example `Sample Meeting` and `alex@example.com`. Use the `test` field to ignore test deliveries in your own system.
+
+By default, the event is `event.created`. Send `event` in the body to test a different event, for example `event.canceled`.
+
+## The result
+
+| Field | Description |
+| --- | --- |
+| `delivered` | `true` if your endpoint replied with a `2xx` status code |
+| `status_code` | The status code of your endpoint, or `null` if Novacal could not connect |
+| `duration_ms` | How long the request took, in milliseconds |
+| `error` | Why the delivery failed, or `null` |
+
+A failed test still returns `200`. Check `delivered` to see the result.
+
+## Limits
+
+- A test is sent one time. There are no retries.
+- A test also works for a webhook that is not active.
+- You can only test webhooks on your own account. Another account's webhook returns `403 access_denied`.

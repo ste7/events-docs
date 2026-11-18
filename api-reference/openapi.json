@@ -757,6 +757,82 @@
         }
       }
     },
+    "/v1/webhooks/{id}/test": {
+      "post": {
+        "description": "Sends a sample payload to the webhook URL at once, so you can check that your endpoint receives and verifies it. The payload is signed like a real delivery and has `\"test\": true`. There are no retries. This also works for a webhook that is not active.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the webhook to test",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Event to send. If you do not send it, `event.created` is used.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "string",
+                    "enum": ["event.created", "event.rescheduled", "event.canceled", "event.started", "event.ended"],
+                    "description": "The event name to put in the sample payload"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "The result of the test delivery. A failed delivery also returns 200, with `delivered` set to `false`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "event": {
+                          "type": "string",
+                          "description": "The event name that was sent"
+                        },
+                        "delivered": {
+                          "type": "boolean",
+                          "description": "Whether your endpoint replied with a 2xx status code"
+                        },
+                        "status_code": {
+                          "type": ["integer", "null"],
+                          "description": "The HTTP status code of your endpoint, or null if Novacal could not connect"
+                        },
+                        "duration_ms": {
+                          "type": "integer",
+                          "description": "How long the request took, in milliseconds"
+                        },
+                        "error": {
+                          "type": ["string", "null"],
+                          "description": "Why the delivery failed, or null if it was delivered"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/event-types/{id}/slots": {
       "get": {
         "description": "Returns bookable slots for one of the authenticated user's event types. The event type's duration, slot interval, buffers and minimum scheduling notice are already applied, so every slot returned can be booked as is.",

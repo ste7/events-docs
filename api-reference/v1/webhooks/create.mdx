@@ -22,6 +22,8 @@ Register a URL that Novacal calls whenever something happens to an event you hos
 
 Subscribe to one or more events per webhook. You can register several webhooks pointing at different URLs.
 
+To check your URL without a real booking, use [Test Webhook](/api-reference/v1/webhooks/test).
+
 <Note>
 `event.started` and `event.ended` are driven by the clock rather than by an action someone takes, so they are checked once a minute. Expect a delivery within a minute of the event's start or end time, not at the exact second. Canceled events never fire either one, and each fires at most once per event.
 </Note>
